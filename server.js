@@ -32,7 +32,8 @@ app.post('/api/shorturl', verifyUrl, async function(req, res) {
 
 app.get('/api/shorturl/:short', async function(req,res) {
   const urlObj = await database.findShortenedUrl(req.params.short)
-  res.json(urlObj ? {original_url: urlObj.originalUrl, short_url: urlObj.shortUrl} : {error: 'No short URL found for the given input'})
+  if(urlObj) res.redirect(urlObj.originalUrl)
+  res.json({error: 'No short URL found for the given input'})
 })
 
 app.listen(port, function() {
